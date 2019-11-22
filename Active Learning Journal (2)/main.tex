@@ -1,0 +1,201 @@
+\documentclass[12 pt]{IEEEtran}
+
+
+  	\usepackage[pdftex]{graphicx}
+  	\graphicspath{{../pdf/}{../jpeg/}}
+	\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+
+	\usepackage[cmex10]{amsmath}
+	\usepackage{amsmath,amssymb}
+	\usepackage{adjustbox}
+
+
+	\usepackage{mathabx}
+    \usepackage{algorithm}
+    \usepackage{algorithmic}
+    
+	\usepackage{array}
+	\usepackage{mdwmath}
+	\usepackage{mdwtab}
+	\usepackage{eqparbox}
+	\usepackage{url}
+	\usepackage{booktabs}
+	
+	\DeclareMathOperator*{\argmax}{arg\,max}
+    \DeclareMathOperator*{\argmin}{arg\,min}
+    \DeclareMathOperator*{\span}{span}
+
+
+	
+	
+\usepackage{graphicx}
+
+
+\title{\LARGE A Graph Signal Processing
+Approach to Active Learning}
+
+% \author{\authorblockN{Leave Author List blank for your IMS2013 Summary (initial) submission.\\ IMS2013 will be rigorously enforcing the new double-blind reviewing requirements.}
+% \authorblockA{\authorrefmark{1}Leave Affiliation List blank for your Summary (initial) submission}}
+
+ \author{Maria D.~Dapena,
+        Daniel L.~Lau,~\IEEEmembership{Member,~IEEE,}
+        Gonzalo R.~Arce,~\IEEEmembership{Fellow,~IEEE,}}
+
+
+\DeclareMathOperator\supp{supp}
+\DeclareMathOperator\sort{sort}
+\begin{document}
+
+
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+HERE goes the abstract.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\IEEEoverridecommandlockouts
+\begin{keywords}
+
+\end{keywords}
+
+\IEEEpeerreviewmaketitle
+
+
+% ===================
+% # I. Introduction #
+% ===================
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+   
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% =======================================================
+% Previous WORKS #
+% =======================================================
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Related Work}
+
+ We divide the the related work in two subsections: first we define Active learning and its limitations. We will use graphs as  in novel form to the these limitation. To do so in the second and third part  we give a brief introduction  to Support vector Machines (SVM),  Graph Theory and Blue Noise sampling on graphs. 
+  
+\subsection{Active Learning}
+
+Active learning  is a a subfield of machine learning. The key hypothesis is that the learning algorithm is allo wed to choose the data from what it learns \cite{settles2009active}. In which commonly know as Supervised Learning (Passive Learning) the algorithm has the labels of the instances in the training set. Sometimes this labels com with low or non- cost, like movie ratings or spam email, but many other  cases labels can be expensive, time-consuming or really difficult. Active learning  overcomes the labeling task, by asking the oracle (human or machine) the correct label of some instances.
+
+Active Learning has been extensively studied as a consequence several algorithms to select queries most of the early work is condensed  in the classical survey of Settles \cite{settles2009active}.  It covers acquisition methods such as  committee approaches \cite{seung1992query,mccallumzy1998employing} and theoretical information measures  \cite{mackay1992information} and uncertainty based methods\cite{tsang2005core,li2013adaptive,tong2001support}.
+
+We focus on the most common an intuitive of all uncertainty based methods. In this framework the model query the instances about which the model is least certain about \cite{lewis1994sequential}. In probabilistic binary classification this means queering the samples $\mathbf{x}$ whose  posteriors probability of being positive (negative) is nearest to  0.5 \cite{lewis1994sequential,lewis1994heterogeneous}. A general and popular  approach for multi-class is to entropy \cite{shannon1948mathematical} as a measure of uncertainty. Then the algorithm query the instances with higher entropy:
+\begin{equation}
+    \mathbf{x}^{*} =  \argmax _{x} \sum_{i} P_{\theta}(y_{i}|x)\og\left(P_{\theta}(y_{i}|x)\right),
+\end{equation}
+where $P_{\theta}(y_{i}|x)$ is the probability that the instance $x$ has class $y_i$ in the model $\theta$.
+
+Uncertainty samples strategies has been expanded for non-probabilistic methods like decision trees \cite{lewis1994heterogeneous}, nearest-neighbor classifiers \cite{fujii1998selective,lindenbaum2004selective}. It also have been extended to Support vector machines querying the instances closer the the linear decision boundary \cite{tong2001support} .
+
+Clearly the uncertainty measure do not explodes  the geometry of the spaces beyond the selecting point near to the boundary. Even worst if the points with higher uncertainty are 
+agglomerated in a region the queries will end-up in a cluster being redundant and not  contributing with new information. We consider a graph based sampling could take advantage of the intrinsic structure of the data. 
+
+\subsection{Support Vector Machines}
+
+SVM emerged a one of the most popular  and useful algorithms for data classification. The  goal of SVM is to  find a boundary between two classes.  The simplest form of this algorithms is the maximal margin classifier, considering the training data as $\{(\mathbf{x}_1,y_1),(\mathbf{x}_2,y_2),...,(\mathbf{x}_n,y_n)\mathbf{x}_1,y_1\}$ if the are linearly separable there exist hyperplane $\mathbf{W}$:
+\begin{equation}
+    \mathbf{W}^{\mathrm{T}}\mathbf{x}+b=0
+\end{equation}
+that satisfies that $\mathbf{W}^{\mathrm{T}}\mathbf{x}_i+b\geq 1 \; \forall \;i: \; y_{i}=1$  and $\mathbf{W}^{\mathrm{T}}\mathbf{x}_i+b\leq -1 \; \forall \;i: \; y_{i}=-1$. The maximal margin method seeks to maximize the distance between  the hyperplanes $\mathbf{W}^{\mathrm{T}}\mathbf{x}_i+b =1 $  and $\mathbf{W}^{\mathrm{T}}\mathbf{x}_i+b=-1$, defined as $\frac{2}{\parallel \mathbf{W} \parallel}$ \cite{steinwart2008support}. Real data is not always linearly separable, in order to deal with real data some slack variables and kernels are used \cite{hearst1998support}.
+
+
+\subsection{Graph Theory}
+
+A graph $G(V,E)$ is a mathematical representations of objects an their relationship. In formal terms a graph $G$  consist in a vertex set $V(G)$ where $|V(G)|=n$,  an edge set $E(V)$, and a relation that  associates  with with edge tow vertices, called its endpoints \cite{west1996introduction}. Graphs  arise in many fields with different application, here we will use the as a tool to represent the instances in the dataset. 
+
+The optimal store a graph is using one of is matrix representations. The adjacency matrix $\mathbf{A}(G)$ is a $n-$by$-n$ binary matrix  which entry $\mathbf{A}(u,v)=1$ if $v$ and $u$ are adjacent. In a weighted graph $w$ is a weighting function  that assigns  no negatives value  to each edge, in this case the elements in $\mathbf{A}$ are $\mathbf{A}(u,v)=\mathbf(W)(u,v)$, the fun weighted graph $\mathbf{A}=\mathbf{W}$.  We restrict the graph on this paper to be undirected and simple, $\mathbf{W}(u,v)=\mathbf{W}(v,u)$ and $\mathbf{W}(u,u)=0$.
+
+Sandryhaila \cite{sandryhaila2013discrete} describes a signal on a graph $x$ as the map from the set of vertices $V$ into the set of complex numbers $\mathbb{C}$, we limit this work to the real space.
+\begin{equation}
+    \begin{split}
+        x:V\rightarrow \mathbb{R},\\
+        v_{n}\rightarrow x_{n}
+    \end{split}
+\end{equation}
+The framework proposed by Sandryhaila pave the way for researchers   like  Fuhr
+and Pesenson \cite{pesenson2015sampling,pesenson2010sampling,Fur} who based their analysis in the Laplacian matrix $\mathbf{L}$:
+\begin{equation}
+    \mathbf{L}=\mathbf{D}-\mathbf{W};
+\end{equation}
+ where  $\mathbf{D}$ denoted the degree matrix, is the diagonal matrix whose entries are given by:
+\begin{equation}
+    \mathbf{D}_{ii}=\sum_{v\in v(G)}\mathbf{W(u,v)}
+\end{equation}
+the eigenvalues of $\mathbf{L}$ are organized as $0=\mu_{1}\leq\mu_{2}\leq ...\leq \mu_{n}$\cite{biyikoglu2007laplacian}. Representing a graph signal in the spectral domain id consider as a Graph Fourier Transform \textbf{GFT}, most of the work in graph signal processing uses the eigendecomposition of the  Lapacian matrix as the \textbf{GFT}. The spectral decomposition of operator $\mathbf{L}$ is represented as $\mathbf{L}=\mathbf{U}\mathbf{\Lambda}\mathbf{U}^{\mathrm{T}}$ \cite{djuric2018cooperative}, then the \textbf{GFT} of a signal is given by $\widehat{x}=\mathbf{U}^{\mathrm{T}}x$. Shuman \cite{shuman2013emerging} stablish an  analogy between Fourier Analysis and Graph Fourier transform, based in this the bandwith of a signal can be defined using the nonzero components of $\widehat{x}$. .
+
+\subsection{Blue Noise sampling on graph}
+
+The problem of sampling on graph has been 
+widely study in the context of graph signal processing and smooth signals \cite{pesenson2008samplingpes,pesenson2010sampling,anis2016efficient}. A signal is considered smooth if the spectrum of the signal lives in a Paley-Wiener space,  $\widehat{x} \in PW_{\omega}(G)=\span\{\mathbf{U}_{k}:\mu_{k} \leq \omega\}$ where $PW_{\omega}(G)$ is the e Paley-Wiener space of bandwidth $\omega$, the the signal $x$ is said to have a bandwith $\omega \in \mathbb{R}_{+}$. The problem consist in selecting a set of with $m$ vertices $S$ from the graph, without loosing information in the reconstruction step. The signal reconstruction problem is beyond the scope of this research we refer the readers to \cite{anis2016efficient} for more details.
+
+We focus a recently introduced graph sampling technique called Blue Noise \cite{parada2018blue}. Blue Noise emerged as a dithering dithering 
+ that converts a continuous tone image into a pattern
+of printed and no-printed dots \cite{ulichney1988dithering,lau2003blue}. The extension proposed by Parada consider the graph as a non regular grid, in the analogy the printed and non-printed dots becomes a pattern of selected and non selected nodes. Blue noise patterns are characterized by a high frequency energy dominance.
+
+A binary dither pattern on  a graph $G(V,E)$ consists on a binary signal, $s \in \{0,1\}^{N}$ in which a $s(v)=1$ only  if $v$ is a selected  vertex. We define as density the ration between the number of selected vertices and the total number of vertices $d=m/n$ and $\parallel s \parallel_{0}=m$. A white-noise pattern $s_{w}$ generated at random in a syntactic dataset in which each observation is conectet to id 5 nearest neighbors  
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% =============================================
+% # III. Modeling and consistency validations #
+% =============================================
+
+\section{Problem Formulation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Experiments}
+
+\subsection{Data sets}
+
+
+% ================== 
+% # IV. CONCLUSION #
+% ==================
+
+\section{Conclusion}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ==================
+% # ACKNOWLEDGMENTS #
+% ==================
+
+% use section* for acknowledgement
+%\section*{Acknowledgment}
+% The authors would like to thank...
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ==============
+% # REFERENCES #
+% ==============
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,biblio_traps_dynamics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
