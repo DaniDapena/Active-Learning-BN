@@ -1,0 +1,102 @@
+% Copyright 2013 by Andre Rauh
+% License: MIT
+
+\mode<presentation>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% OPTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% OUTER THEME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Adds miniframes (the little circles on the top bar on each page representing
+% the slides)
+% Options:
+% footline = authorinstitute, authortitle, institutetitle, empty
+%\useoutertheme[subsection=false]{miniframes}
+\useoutertheme{default}
+%\useoutertheme{infolines}
+%\useoutertheme{shadow}
+%\useoutertheme{sidebar}
+%\useoutertheme[subsection=false]{smoothbars}
+%\useoutertheme{split}
+%\useoutertheme{tree}
+%\setbeamertemplate{footline}[page number] %Current & total page number
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% INNER THEME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Makes everything edgy. No round corners. No shading.
+\useinnertheme{default}
+%\useinnertheme{circles}
+%\useinnertheme{inmargin}
+%\useinnertheme{rounded}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% COLOR THEME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usecolortheme{Udel}
+% Or just use UD blue:
+%\usecolortheme[RGB={0,83,159}]{structure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% FONT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Copyright 2007 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% CUSTOM %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Title Page: (Remove the entire block to get a more boring default)
+\RequirePackage{tikz}
+\addtobeamertemplate{title page}{\vspace{3\baselineskip}}{}
+\addtobeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % Make the entire background UD blue
+    \fill[UdelBlue,opacity=0.7] (-10cm,-10cm) rectangle (14cm,4cm);
+    % The seal at the top left corner
+    \node[xshift=0cm,yshift=0cm,opacity=0.25] (seal) at (2cm,-0.3\paperheight) {%
+      \includegraphics[width=.8\paperwidth]{UDOfficialSeal}
+    };
+    % The UD logo at the bottom right
+    \node[xshift=0cm,yshift=0cm,opacity=0.3] (udlogo) at (10cm,-0.75\paperheight) {%
+      \includegraphics[width=.4\paperwidth]{InterlockingUD1whiteNoTM}
+    };
+    % University of Delaware logo at top right
+    \node[xshift=0cm,yshift=0cm,opacity=0.7] (uofd) at (9.4cm,-0.9cm) {%
+      \includegraphics[width=0.35\paperwidth]{UDPrimaryLogoWhite}
+    };
+  \end{tikzpicture}
+}{}
+\setbeamercolor{titlelike}{fg=,bg=}
+\setbeamerfont{title page}{family=\rmfamily,series=\bfseries}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=white}
+\setbeamercolor{author}{fg=white}
+\setbeamercolor{institute}{fg=white}
+\setbeamercolor{date}{fg=white}
+% /Title Page end
+
+\mode
+<all>
+
+
