@@ -1,4 +1,11 @@
 function B = pointCloudVAC(A, g, D)
+%
+% A = MxN matrix holding the position of M nodes in N dimensional space
+% g = fraction of nodes we want to preserve after sampling
+% D = adjacency matrix, if not provided, we use the Euclidean distance
+%     between nodes.
+% B = Mx1 binary vector flagging kept vs discarded nodes after sampling
+%
 
 [M,N]=size(A);
 if (M < N)
